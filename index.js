@@ -1,18 +1,21 @@
 import { ApolloServer, gql } from 'apollo-server'
+import { importSchema } from 'graphql-import'
+import { applyMiddleware } from 'graphql-middleware'
+import { makeExecutableSchema } from 'graphql-tools'
 
 const server = new ApolloServer({
-  resolvers: {
-    Query: {
-      chat(_, args, ctx, info) {
-        return 'chat'
-      }
-    }
-  },
-  typeDefs: gql`
-    type Query {
-      chat: String
-    }
-  `
+  schema: applyMiddleware(
+    makeExecutableSchema({
+      resolvers: {
+        Query: {
+          chat(_, args, ctx, info) {
+            return 'chat'
+          }
+        }
+      },
+      typeDefs: importSchema('./schema.graphql')
+    })
+  )
 })
 
 server.listen(8080).then(({ url, subscriptionsUrl }) => {
