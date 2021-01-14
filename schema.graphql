@@ -1,3 +1,11 @@
 type Query {
-  chat: String
+  chat: String!
+}
+
+type Mutation {
+  sendMessage(message: String!): String!
+}
+
+type Subscription {
+  messageSent: String!
 }
